@@ -1,18 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { StaticRouter } from 'react-router-dom/server'
-import { Navbar, NavbarMenu } from '@nodestrap/navbar'
+import { Navbar, NavbarMenu, cssProps as navbarConfig } from '@nodestrap/navbar'
 import { Link } from '@nodestrap/react-router-link'
-import { Icon, config as iconConfig } from '@nodestrap/icon'
+import { config as iconConfig } from '@nodestrap/icon'
 import { useRouter } from 'next/router'
 import { Container } from '@nodestrap/container'
 import Home from '../routes/Home'
 import NotFound from '../routes/404'
-import { StyleSheet, createSheet, globalDef, composition, rule, rules, fontFace, layout, atRoot, vars } from '@cssfn/cssfn'
-import { siteVarDecls } from './_app'
+import { StyleSheet, createSheet, globalDef, atRoot, vars } from '@cssfn/cssfn'
+import { siteVarDecls } from '../components/config'
 import type { Cust } from '@cssfn/css-types'
 
 
@@ -20,9 +19,6 @@ import type { Cust } from '@cssfn/css-types'
 const isServer = (typeof window === 'undefined');
 const IsomorphicRouter = isServer ? StaticRouter : BrowserRouter;
 
-
-
-iconConfig.img.files.push('paulina-logo.svg');
 
 
 const useOnResize = (callback: ResizeObserverCallback) => {
@@ -63,6 +59,12 @@ const useObserveHeight = (variable: Cust.Decl) => {
 
     return setElmRef;
 }
+
+
+
+iconConfig.img.files.push('paulina-logo.svg');
+
+(navbarConfig as any).menuFontWeight = 400;
 
 
 
