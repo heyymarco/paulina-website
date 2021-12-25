@@ -8,9 +8,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cssfn/css-var": "^1.0.3",
+    "@cssfn/cssfn": "^1.0.7",
+    "@nodestrap/container": "^4.0.6",
+    "@nodestrap/element": "^4.0.4",
+    "@nodestrap/icon": "^4.0.8",
+    "@nodestrap/navbar": "^4.0.8",
+    "@nodestrap/react-router-link": "^4.0.2",
     "next": "12.0.7",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-router-dom": "^6.2.1",
+    "sass": "^1.45.1"
   },
   "devDependencies": {
     "@types/node": "17.0.4",
