@@ -58,3 +58,12 @@ export const MainSection = (props: SectionProps) => {
         />
     );
 }
+
+export const SubSection = (props: SectionProps) => {
+    return (
+        <Section
+            {...props}
+            titleTag={props.titleTag ?? 'h3'}
+        />
+    );
+}

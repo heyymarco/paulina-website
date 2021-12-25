@@ -1,17 +1,21 @@
 import type { NextPage } from 'next'
-import { GenericSection, Section, MainSection } from '../components/Section'
-import { createSheet, globalDef, rules, rule, atRoot, fontFace, layout, vars, mainComposition, children } from '@cssfn/cssfn'
+import { GenericSection, Section, MainSection, SubSection } from '../components/Section'
+import { createSheet, globalDef, rules, rule, atRoot, fontFace, layout, vars, compositionOf, children, variants, descendants } from '@cssfn/cssfn'
 import { createUseSheet } from '@cssfn/react-cssfn'
 import { siteVars } from '../components/config'
 import { colors } from '@nodestrap/colors'
 import { spacers } from '@nodestrap/spacers'
+import { Carousel } from '@nodestrap/carousel'
+import { Masonry } from '@nodestrap/masonry'
+import { isScreenWidthSmallerThan } from '@nodestrap/breakpoints'
 import { cssProps as containerConfig } from '@nodestrap/container'
 import { Icon } from '@nodestrap/icon'
+import gens from '@nodestrap/typos'
 
 
 
 const useSheet = createUseSheet(() => [
-    mainComposition([
+    compositionOf('hero', [
         layout({
             ...children('&&', [
                 layout({
@@ -27,7 +31,7 @@ const useSheet = createUseSheet(() => [
         
                     display: 'grid',
                     gridTemplateColumns: [['1fr', '1fr']],
-                    gridTemplateRows: [['2fr', 'max-content', '2fr', '20px', '1fr']],
+                    gridTemplateRows: [['2fr', 'max-content', '2fr', '20px', 'auto']],
                     gridTemplateAreas: [[
                         '"....... ......."',
                         '"....... content"',
@@ -36,6 +40,20 @@ const useSheet = createUseSheet(() => [
                         '"footer   footer"',
                     ]],
                 }),
+                variants([
+                    isScreenWidthSmallerThan('sm', [
+                        layout({
+                            // backgroundColor: 'red',
+                            // gridTemplateColumns: [['2fr', '5fr']],
+                        }),
+                    ]),
+                    isScreenWidthSmallerThan('sm', [
+                        layout({
+                            // backgroundColor: 'red',
+                            gridTemplateColumns: [['2fr', '5fr']],
+                        }),
+                    ]),
+                ]),
             ]),
 
             ...children('article', [
@@ -54,12 +72,34 @@ const useSheet = createUseSheet(() => [
                     paddingBlock: spacers.lg,
                     paddingInline: spacers.lg,
                     gap: spacers.default,
+                    marginBlockEnd: spacers.default,
 
                     ...children('*', [
                         layout({
                             fontWeight: '700 !important',
                             margin: '0px !important',
                         }),
+                    ]),
+                    ...children('.display', [
+                        layout({
+                            fontSize: [['calc(', 2.5, '*', gens.fontSize, ')']],
+                        }),
+                        variants([
+                            isScreenWidthSmallerThan('md', [
+                                layout({
+                                    // color: 'blue',
+                                    fontSize: [['calc(', 1.75, '*', gens.fontSize, ')']],
+                                }),
+                            ]),
+                        ]),
+                        variants([
+                            isScreenWidthSmallerThan('sm', [
+                                layout({
+                                    // color: 'red',
+                                    fontSize: [['calc(', 1.25, '*', gens.fontSize, ')']],
+                                }),
+                            ]),
+                        ]),
                     ]),
                 }),
             ]),
@@ -77,6 +117,8 @@ const useSheet = createUseSheet(() => [
                     gridTemplateAreas: [[
                         '"left middle right"',
                     ]],
+
+                    padding: '0.5em',
 
                     alignItems: 'center',
 
@@ -98,6 +140,23 @@ const useSheet = createUseSheet(() => [
             ]),
         }),
     ]),
+    compositionOf('gallery', [
+        layout({
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            gap: spacers.default,
+
+            ...descendants('.thumb', [
+                layout({
+                    width: '300px',
+                    // height: '300px',
+                    aspectRatio: 1.33,
+                    flex: [[0, 1, 'auto']],
+                }),
+            ]),
+        }),
+    ]),
 ], /*sheetId :*/'home');
 
 
@@ -105,13 +164,13 @@ const useSheet = createUseSheet(() => [
 const Page : NextPage = () => {
     const sheet = useSheet();
 
-    return (
-        <GenericSection classes={[sheet.main]} theme='primary' mild={true}>
+    return (<>
+        <GenericSection classes={[sheet.hero]} theme='primary' mild={true}>
             <article>
-                <p className='display-6'>
+                <p className='display display-6'>
                     Hi, i'm Paulina
                 </p>
-                <h1 className='display-6'>
+                <h1 className='display display-6'>
                     Singer, Model, Instagrammer
                 </h1>
                 <p>
@@ -130,6 +189,83 @@ const Page : NextPage = () => {
                 </p>
             </footer>
         </GenericSection>
-    );
+        <Section title='My Song Albums' theme='primary' mild={true}>
+            <p>
+                Here some album I&apos;ve created. Not so much.
+            </p>
+            <SubSection title='The Best Damn Thing'>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem similique delectus corporis consequuntur amet deserunt, commodi eveniet blanditiis laborum labore facere inventore perspiciatis mollitia impedit earum id nobis error! Possimus.
+                </p>
+                <div className={sheet.gallery}>
+                    <Carousel classes={['thumb']} infiniteLoop={true}>
+                        <img src='https://picsum.photos/400/300?random=45' alt='' />
+                        <img src='https://picsum.photos/400/300?random=53' alt='' />
+                        <img src='https://picsum.photos/400/300?random=75' alt='' />
+                        <img src='https://picsum.photos/400/300?random=22' alt='' />
+                        <img src='https://picsum.photos/400/300?random=78' alt='' />
+                    </Carousel>
+                    <Carousel classes={['thumb']} infiniteLoop={true}>
+                        <img src='https://picsum.photos/400/300?random=gg' alt='' />
+                        <img src='https://picsum.photos/400/300?random=sf' alt='' />
+                        <img src='https://picsum.photos/400/300?random=fd' alt='' />
+                        <img src='https://picsum.photos/400/300?random=gh' alt='' />
+                        <img src='https://picsum.photos/400/300?random=sf' alt='' />
+                    </Carousel>
+                    <Carousel classes={['thumb']} infiniteLoop={true}>
+                        <img src='https://picsum.photos/400/300?random=fe' alt='' />
+                        <img src='https://picsum.photos/400/300?random=ys' alt='' />
+                        <img src='https://picsum.photos/400/300?random=fj' alt='' />
+                        <img src='https://picsum.photos/400/300?random=cr' alt='' />
+                        <img src='https://picsum.photos/400/300?random=rg' alt='' />
+                    </Carousel>
+                </div>
+            </SubSection>
+            <SubSection title='You&apos;re Crazy'>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem similique delectus corporis consequuntur amet deserunt, commodi eveniet blanditiis laborum labore facere inventore perspiciatis mollitia impedit earum id nobis error! Possimus.
+                </p>
+                <div className={sheet.gallery}>
+                    <Carousel classes={['thumb']} infiniteLoop={true}>
+                        <img src='https://picsum.photos/400/300?random=jd' alt='' />
+                        <img src='https://picsum.photos/400/300?random=hd' alt='' />
+                        <img src='https://picsum.photos/400/300?random=jf' alt='' />
+                        <img src='https://picsum.photos/400/300?random=sg' alt='' />
+                        <img src='https://picsum.photos/400/300?random=hf' alt='' />
+                    </Carousel>
+                    <Carousel classes={['thumb']} infiniteLoop={true}>
+                        <img src='https://picsum.photos/400/300?random=eb' alt='' />
+                        <img src='https://picsum.photos/400/300?random=fs' alt='' />
+                        <img src='https://picsum.photos/400/300?random=vs' alt='' />
+                        <img src='https://picsum.photos/400/300?random=kt' alt='' />
+                        <img src='https://picsum.photos/400/300?random=dc' alt='' />
+                    </Carousel>
+                    <Carousel classes={['thumb']} infiniteLoop={true}>
+                        <img src='https://picsum.photos/400/300?random=eg' alt='' />
+                        <img src='https://picsum.photos/400/300?random=sb' alt='' />
+                        <img src='https://picsum.photos/400/300?random=ef' alt='' />
+                        <img src='https://picsum.photos/400/300?random=wc' alt='' />
+                        <img src='https://picsum.photos/400/300?random=cw' alt='' />
+                    </Carousel>
+                </div>
+            </SubSection>
+        </Section>
+        <Section title='Endorsement' theme='secondary' mild={true}>
+            <p className='lead'>
+                Need a model for promoting your products?
+            </p>
+            <p>
+                Maybe I can help. Please contact me for booking.
+            </p>
+        </Section>
+        <Section title='Booking for Live Concert' theme='primary' mild={true}>
+            <p className='lead'>
+                Wanna to create live concert with me as a singer?
+            </p>
+            <p>
+                Sure! We can collaborate with you &amp; team.
+            </p>
+        </Section>
+    </>);
 }
 export default Page;

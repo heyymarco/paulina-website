@@ -81,6 +81,9 @@ createSheet(() => [
 const primary = Color('#FE90C3');
 defineTheme('primary', primary);
 
+const secondary = primary.rotate(-30).darken(0.2);
+defineTheme('secondary', secondary);
+
 const textColor = Color('#491D31');
 colors.dark = textColor as any;
 colors.primaryText = textColor as any;

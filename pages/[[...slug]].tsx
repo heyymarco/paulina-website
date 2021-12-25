@@ -112,7 +112,9 @@ export default (function Page(props) {
             </main>
 
             <Container elmRef={setFooterRef} tag='footer' theme='primary' mild={false}>
-                <h3 className='h5'>Support Us</h3>
+                <p>
+                    © Copyright 2022 Paulina
+                </p>
             </Container>
         </IsomorphicRouter>
     )
