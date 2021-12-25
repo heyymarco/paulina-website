@@ -1,7 +1,8 @@
 import { config as iconConfig } from '@nodestrap/icon'
 import { createSheet, globalDef, rules, rule, atRoot, fontFace, layout, vars } from '@cssfn/cssfn'
 import { createCssVar } from '@cssfn/css-var'
-import { defineTheme } from '@nodestrap/colors'
+import { colors, defineTheme, defineForeg } from '@nodestrap/colors'
+import Color from 'color'
 
 
 
@@ -19,7 +20,7 @@ createSheet(() => [
     globalDef([
         rule('html', [
             layout({
-                minBlockSize: 'fill-available',
+                blockSize: 'fill-available',
             }),
         ]),
         rule(['html', 'body'], [
@@ -68,7 +69,7 @@ createSheet(() => [
 
         atRoot([
             vars({
-                [siteVarDecls.viewportHeight] : `calc(${siteVars.bodyHeight} - ${siteVars.headerHeight} - ${siteVars.footerHeight})`,
+                [siteVarDecls.viewportHeight] : `calc(${siteVars.bodyHeight} - ${siteVars.headerHeight})`,
             }),
         ]),
     ]),
@@ -77,7 +78,16 @@ createSheet(() => [
 
 
 
-defineTheme('primary', '#FE90C3')
+const primary = Color('#FE90C3');
+defineTheme('primary', primary);
+
+const textColor = Color('#491D31');
+colors.dark = textColor as any;
+colors.primaryText = textColor as any;
+colors.primaryBold = textColor as any;
+(colors as any).primaryThinner = primary.alpha(0.2) as any;
+defineForeg(textColor);
 
 
 iconConfig.img.files.push('paulina-logo.svg');
+iconConfig.img.files.push('scroll-down.svg');
