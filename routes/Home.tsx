@@ -1,10 +1,12 @@
 import type { NextPage } from 'next'
+import Head from 'next/head'
 import { GenericSection, Section, MainSection, SubSection } from '../components/Section'
 import { createSheet, globalDef, rules, rule, atRoot, fontFace, layout, vars, compositionOf, children, variants, descendants } from '@cssfn/cssfn'
 import { createUseSheet } from '@cssfn/react-cssfn'
 import { siteVars } from '../components/config'
 import { colors } from '@nodestrap/colors'
 import { spacers } from '@nodestrap/spacers'
+import { borders } from '@nodestrap/borders'
 import { Carousel } from '@nodestrap/carousel'
 import { Masonry } from '@nodestrap/masonry'
 import { isScreenWidthSmallerThan, isScreenWidthAtLeast } from '@nodestrap/breakpoints'
@@ -13,246 +15,351 @@ import { Icon } from '@nodestrap/icon'
 import { ButtonIcon as Button } from '@nodestrap/button-icon'
 import gens from '@nodestrap/typos'
 import { Link } from '@nodestrap/react-router-link'
+import { usesThemeVariant } from '@nodestrap/basic'
 
 
 
-const useSheet = createUseSheet(() => [
-    compositionOf('hero', [
-        layout({
-            ...children('&&', [
-                layout({
-                    minBlockSize: siteVars.viewportHeight,
-                    boxSizing: 'border-box',
-                    backgroundImage: [
-                        `url("/images/paulina-beach-backg.svg")`,
-                        `linear-gradient(20deg, ${colors.primaryThin}, ${colors.white})`
-                    ] as any,
-                    backgroundSize: 'cover',
-                    backgroundPosition: '50% 40%',
-                    backgroundRepeat: 'no-repeat',
-        
-                    display: 'grid',
-                    gridTemplateColumns: [['1fr', '1fr']],
-                    gridTemplateRows: [['2fr', 'max-content', '2fr', '20px', 'auto']],
-                    gridTemplateAreas: [[
-                        '"....... ......."',
-                        '"....... content"',
-                        '"....... ......."',
-                        '"footer   footer"',
-                        '"footer   footer"',
-                    ]],
-                }),
-                variants([
-                    isScreenWidthSmallerThan('sm', [
-                        layout({
-                            // backgroundColor: 'red',
-                            // gridTemplateColumns: [['2fr', '5fr']],
-                        }),
-                    ]),
-                    isScreenWidthSmallerThan('sm', [
-                        layout({
-                            // backgroundColor: 'red',
-                            gridTemplateColumns: [['2fr', '5fr']],
-                        }),
-                    ]),
-                ]),
-            ]),
-
-            ...children('article', [
-                layout({
-                    gridArea: 'content',
-
-                    display: 'grid',
-                    justifyContent: 'center',
-                    alignContent: 'center',
-
-                    background: (colors as any).primaryThinner,
-                    border: `solid 1px ${colors.white}`,
-                    backdropFilter: [['blur(5px)']],
-                    filter: [[`drop-shadow(0px 0px 10px ${colors.primaryBold})`]],
-
-                    paddingBlock: spacers.lg,
-                    paddingInline: spacers.lg,
-                    gap: spacers.default,
-                    marginBlockEnd: spacers.default,
-
-                    ...children('*', [
-                        layout({
-                            fontWeight: '700 !important',
-                            margin: '0px !important',
-                        }),
-                    ]),
-                    ...children('.display', [
-                        layout({
-                            fontSize: [['calc(', 2.5, '*', gens.fontSize, ')']],
-                        }),
-                        variants([
-                            isScreenWidthSmallerThan('md', [
-                                layout({
-                                    // color: 'blue',
-                                    fontSize: [['calc(', 1.75, '*', gens.fontSize, ')']],
-                                }),
-                            ]),
+const useSheet = createUseSheet(() => {
+    const [, themeRefs] = usesThemeVariant();
+    
+    return [
+        compositionOf('hero', [
+            layout({
+                ...children('&&', [
+                    layout({
+                        minBlockSize: siteVars.viewportHeight,
+                        boxSizing: 'border-box',
+                        backgroundImage: [
+                            `url("/images/paulina-beach-backg.svg")`,
+                            `linear-gradient(20deg, ${colors.primaryThin}, ${colors.white})`
+                        ] as any,
+                        backgroundSize: 'cover',
+                        backgroundPosition: '50% 40%',
+                        backgroundRepeat: 'no-repeat',
+            
+                        display: 'grid',
+                        gridTemplateColumns: [['1fr', '1fr']],
+                        gridTemplateRows: [['2fr', 'max-content', '2fr', '20px', 'auto']],
+                        gridTemplateAreas: [[
+                            '"....... ......."',
+                            '"....... content"',
+                            '"....... ......."',
+                            '"footer   footer"',
+                            '"footer   footer"',
+                        ]],
+                    }),
+                    variants([
+                        isScreenWidthSmallerThan('sm', [
+                            layout({
+                                // backgroundColor: 'red',
+                                // gridTemplateColumns: [['2fr', '5fr']],
+                            }),
                         ]),
-                        variants([
-                            isScreenWidthSmallerThan('sm', [
-                                layout({
-                                    // color: 'red',
-                                    fontSize: [['calc(', 1.25, '*', gens.fontSize, ')']],
-                                }),
-                            ]),
+                        isScreenWidthSmallerThan('sm', [
+                            layout({
+                                // backgroundColor: 'red',
+                                gridTemplateColumns: [['2fr', '5fr']],
+                            }),
                         ]),
                     ]),
-                }),
-            ]),
-            ...children('footer', [
-                layout({
-                    gridArea: 'footer',
-
-                    borderBlockStart: `solid 1px ${colors.white}`,
-                    backgroundImage: [
-                        `linear-gradient(0deg, ${colors.primary}, ${(colors as any).primaryThinner})`,
-                    ],
-                    backdropFilter: [['blur(5px)']],
-
-                    display: 'grid',
-                    gridTemplateColumns: [['1fr', 'max-content', '1fr']],
-                    gridTemplateRows: [['1fr']],
-                    gridTemplateAreas: [[
-                        '"left middle right"',
-                    ]],
-
-                    padding: '0.5em',
-
-                    alignItems: 'center',
-
-                    ...children('.scroller', [
-                        layout({
-                            gridArea: 'middle',
-                            justifySelf: 'center',
-                        }),
-                    ]),
-                    ...children('.message', [
-                        layout({
-                            gridArea: 'right',
-                            justifySelf: 'start',
-                            margin: '0px',
-                            marginInlineStart: spacers.default,
-                        }),
-                    ]),
-                }),
-            ]),
-        }),
-    ]),
-    compositionOf('gallery', [
-        layout({
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            gap: spacers.default,
-
-            ...descendants('.thumb', [
-                layout({
-                    width: '300px',
-                    // height: '300px',
-                    aspectRatio: 1.33,
-                    flex: [[0, 1, 'auto']],
-                }),
-            ]),
-        }),
-    ]),
-    compositionOf('endorsement', [
-        layout({
-            ...children('&&', [
-                layout({
-                    display: 'grid',
-                    gridTemplateColumns: [['1fr']],
-                    gridTemplateRows: [['2fr', '1fr', '1fr']],
-                    gridTemplateAreas: [[
-                        '"illus"',
-                        '"shared"',
-                        '"content"',
-                    ]],
-                    justifyItems: 'center',
-                    alignItems: 'center',
-        
-                    ...children('.illustration', [
-                        layout({
-                            gridArea: 'illus/illus / content/content',
-
-                            position: 'absolute', // do not taking space
-                            // justifySelf: 'stretch',
-                            // alignSelf: 'stretch',
-                            // width: '100%',
-                            // height: '100%',
-                            inlineSize: `calc(100% + (2 * ${containerConfig.paddingInline}))`,
-                            blockSize: `calc(100% + (2 * ${containerConfig.paddingBlock}))`,
-                            objectFit: 'cover',
-                            objectPosition: '50% 35%',
-
-                        }),
-                    ]),
-                    ...children('article', [
-                        layout({
-                            gridArea: 'shared/shared / content/content',
-                            alignSelf: 'end',
-
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'stretch',
-        
-                            backgroundImage: [
-                                `linear-gradient(${(colors as any).primaryThinner}, ${(colors as any).primaryThinner})`,
-                                // 'linear-gradient(rgba(255,255,255, 0.3), rgba(255,255,255, 0.3))'
-                            ],
-                            border: `solid 1px ${colors.white}`,
-                            backdropFilter: [['blur(10px)']],
-                            filter: [[`drop-shadow(0px 0px 10px ${colors.primaryBold})`]],
-        
-                            paddingInline: containerConfig.paddingInline,
-                            paddingBlock: containerConfig.paddingBlock,
-        
-                            // marginInline: `calc(0px - ${containerConfig.paddingInline})`,
-                            // marginBlock: `calc(0px - ${containerConfig.paddingBlock})`,
-                            // inlineSize: `calc(100% + (2 * ${containerConfig.paddingInline}))`
-                            inlineSize: '100%',
-        
-                            
-                            ...children('.contact-btn', [
-                                layout({
-                                    alignSelf: 'end',
-                                }),
-                            ]),
-                        }),
-                    ]),
-                }),
-                variants([
-                    isScreenWidthAtLeast('sm', [
-                        layout({
-                            // background: 'red',
-                            gridTemplateColumns: [['1fr', '1fr', '1fr']],
-                            gridTemplateRows: [['1fr']],
-                            gridTemplateAreas: [[
-                                '"illus shared content"',
-                            ]],
-        
-                            ...children('.illustration', [
-                                layout({
-                                    gridArea: 'illus/illus / shared/shared',
-                                }),
-                            ]),
-                            ...children('article', [
-                                layout({
-                                    gridArea: 'shared/shared / content/content',
-                                }),
-                            ]),
-                        })
-                    ])
                 ]),
-            ]),
-        }),
-    ]),
-], /*sheetId :*/'home');
+
+                ...children('article', [
+                    layout({
+                        gridArea: 'content',
+
+                        display: 'grid',
+                        justifyContent: 'center',
+                        alignContent: 'center',
+
+                        background: (colors as any).primaryThinner,
+                        border: `solid 1px ${colors.white}`,
+                        backdropFilter: [['blur(5px)']],
+                        filter: [[`drop-shadow(0px 0px 10px ${colors.primaryBold})`]],
+
+                        paddingBlock: spacers.lg,
+                        paddingInline: spacers.lg,
+                        gap: spacers.default,
+                        marginBlockEnd: spacers.default,
+
+                        ...children('*', [
+                            layout({
+                                fontWeight: '700 !important',
+                                margin: '0px !important',
+                            }),
+                        ]),
+                        ...children('.display', [
+                            layout({
+                                fontSize: [['calc(', 2.5, '*', gens.fontSize, ')']],
+                            }),
+                            variants([
+                                isScreenWidthSmallerThan('md', [
+                                    layout({
+                                        // color: 'blue',
+                                        fontSize: [['calc(', 1.75, '*', gens.fontSize, ')']],
+                                    }),
+                                ]),
+                            ]),
+                            variants([
+                                isScreenWidthSmallerThan('sm', [
+                                    layout({
+                                        // color: 'red',
+                                        fontSize: [['calc(', 1.25, '*', gens.fontSize, ')']],
+                                    }),
+                                ]),
+                            ]),
+                        ]),
+                    }),
+                ]),
+                ...children('footer', [
+                    layout({
+                        gridArea: 'footer',
+
+                        borderBlockStart: `solid 1px ${colors.white}`,
+                        backgroundImage: [
+                            `linear-gradient(0deg, ${colors.primary}, ${(colors as any).primaryThinner})`,
+                        ],
+                        backdropFilter: [['blur(5px)']],
+
+                        display: 'grid',
+                        gridTemplateColumns: [['1fr', 'max-content', '1fr']],
+                        gridTemplateRows: [['1fr']],
+                        gridTemplateAreas: [[
+                            '"left middle right"',
+                        ]],
+
+                        padding: '0.5em',
+
+                        alignItems: 'center',
+
+                        ...children('.scroller', [
+                            layout({
+                                gridArea: 'middle',
+                                justifySelf: 'center',
+                            }),
+                        ]),
+                        ...children('.message', [
+                            layout({
+                                gridArea: 'right',
+                                justifySelf: 'start',
+                                margin: '0px',
+                                marginInlineStart: spacers.default,
+                            }),
+                        ]),
+                    }),
+                ]),
+            }),
+        ]),
+        compositionOf('gallery', [
+            layout({
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                gap: spacers.default,
+                justifyContent: 'center', // makes left & right paddings are equal
+
+                ...descendants('.thumb', [
+                    layout({
+                        width: '300px',
+                        // height: '300px',
+                        aspectRatio: 1.33,
+                        flex: [[0, 1, 'auto']],
+                    }),
+                ]),
+            }),
+        ]),
+        compositionOf('endorsement', [
+            layout({
+                ...children('&&', [
+                    layout({
+                        minBlockSize: siteVars.viewportHeight,
+                        display: 'grid',
+                        gridTemplateColumns: [['1fr']],
+                        gridTemplateRows: [['2fr', '1fr', '1fr']],
+                        gridTemplateAreas: [[
+                            '"illus"',
+                            '"shared"',
+                            '"content"',
+                        ]],
+                        justifyItems: 'center',
+                        alignItems: 'center',
+
+                        borderBlockStartWidth: borders.hair,
+                        borderColor: themeRefs.backg,
+            
+                        ...children('.illustration', [
+                            layout({
+                                gridArea: 'illus/illus / content/content',
+
+                                position: 'absolute', // do not taking space
+                                // justifySelf: 'stretch',
+                                // alignSelf: 'stretch',
+                                // width: '100%',
+                                // height: '100%',
+                                inlineSize: `calc(100% + (2 * ${containerConfig.paddingInline}))`,
+                                blockSize: `calc(100% + (2 * ${containerConfig.paddingBlock}))`,
+                                objectFit: 'cover',
+                                objectPosition: '50% 35%',
+
+                            }),
+                        ]),
+                        ...children('article', [
+                            layout({
+                                gridArea: 'shared/shared / content/content',
+                                alignSelf: 'end',
+
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'stretch',
+            
+                                backgroundImage: [
+                                    `linear-gradient(${(colors as any).primaryThinner}, ${(colors as any).primaryThinner})`,
+                                    'linear-gradient(rgba(255,255,255, 0.2), rgba(255,255,255, 0.2))'
+                                ],
+                                border: `solid 1px ${colors.white}`,
+                                backdropFilter: [['blur(10px)']],
+                                filter: [[`drop-shadow(0px 0px 10px ${colors.primaryBold})`]],
+            
+                                paddingInline: containerConfig.paddingInline,
+                                paddingBlock: containerConfig.paddingBlock,
+            
+                                // marginInline: `calc(0px - ${containerConfig.paddingInline})`,
+                                // marginBlock: `calc(0px - ${containerConfig.paddingBlock})`,
+                                // inlineSize: `calc(100% + (2 * ${containerConfig.paddingInline}))`
+                                inlineSize: '100%',
+            
+                                
+                                ...children('.contact-btn', [
+                                    layout({
+                                        alignSelf: 'end',
+                                    }),
+                                ]),
+                            }),
+                        ]),
+                    }),
+                    variants([
+                        isScreenWidthAtLeast('sm', [
+                            layout({
+                                // background: 'red',
+                                gridTemplateColumns: [['1fr', '1fr', '1fr']],
+                                gridTemplateRows: [['1fr']],
+                                gridTemplateAreas: [[
+                                    '"illus shared content"',
+                                ]],
+            
+                                ...children('.illustration', [
+                                    layout({
+                                        gridArea: 'illus/illus / shared/shared',
+                                    }),
+                                ]),
+                                ...children('article', [
+                                    layout({
+                                        gridArea: 'shared/shared / content/content',
+                                    }),
+                                ]),
+                            })
+                        ])
+                    ]),
+                ]),
+            }),
+        ]),
+        compositionOf('concert', [
+            layout({
+                ...children('&&', [
+                    layout({
+                        minBlockSize: siteVars.viewportHeight,
+                        display: 'grid',
+                        gridTemplateColumns: [['1fr']],
+                        gridTemplateRows: [['2fr', '1fr', '1fr']],
+                        gridTemplateAreas: [[
+                            '"illus"',
+                            '"shared"',
+                            '"content"',
+                        ]],
+                        justifyItems: 'center',
+                        alignItems: 'center',
+
+                        borderBlockStartWidth: borders.hair,
+                        borderColor: themeRefs.backg,
+            
+                        ...children('.illustration', [
+                            layout({
+                                gridArea: 'illus/illus / content/content',
+
+                                position: 'absolute', // do not taking space
+                                // justifySelf: 'stretch',
+                                // alignSelf: 'stretch',
+                                // width: '100%',
+                                // height: '100%',
+                                inlineSize: `calc(100% + (2 * ${containerConfig.paddingInline}))`,
+                                blockSize: `calc(100% + (2 * ${containerConfig.paddingBlock}))`,
+                                objectFit: 'cover',
+                                objectPosition: '50% 35%',
+
+                            }),
+                        ]),
+                        ...children('article', [
+                            layout({
+                                gridArea: 'shared/shared / content/content',
+                                alignSelf: 'end',
+
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'stretch',
+            
+                                backgroundImage: [
+                                    `linear-gradient(${(colors as any).primaryThinner}, ${(colors as any).primaryThinner})`,
+                                    'linear-gradient(rgba(255,255,255, 0.3), rgba(255,255,255, 0.3))'
+                                ],
+                                border: `solid 1px ${colors.white}`,
+                                backdropFilter: [['blur(10px)']],
+                                filter: [[`drop-shadow(0px 0px 10px ${colors.primaryBold})`]],
+            
+                                paddingInline: containerConfig.paddingInline,
+                                paddingBlock: containerConfig.paddingBlock,
+            
+                                // marginInline: `calc(0px - ${containerConfig.paddingInline})`,
+                                // marginBlock: `calc(0px - ${containerConfig.paddingBlock})`,
+                                // inlineSize: `calc(100% + (2 * ${containerConfig.paddingInline}))`
+                                inlineSize: '100%',
+            
+                                
+                                ...children('.contact-btn', [
+                                    layout({
+                                        alignSelf: 'end',
+                                    }),
+                                ]),
+                            }),
+                        ]),
+                    }),
+                    variants([
+                        isScreenWidthAtLeast('sm', [
+                            layout({
+                                // background: 'red',
+                                gridTemplateColumns: [['1fr', '1fr', '2fr']],
+                                gridTemplateRows: [['1fr']],
+                                gridTemplateAreas: [[
+                                    '"content shared illus"',
+                                ]],
+            
+                                ...children('.illustration', [
+                                    layout({
+                                        gridArea: 'shared/shared / illus/illus',
+                                    }),
+                                ]),
+                                ...children('article', [
+                                    layout({
+                                        gridArea: 'content/content / shared/shared',
+                                    }),
+                                ]),
+                            })
+                        ])
+                    ]),
+                ]),
+            }),
+        ]),
+    ];
+}, /*sheetId :*/'home');
 
 
 
@@ -260,6 +367,10 @@ const Page : NextPage = () => {
     const sheet = useSheet();
 
     return (<>
+        <Head>
+            <title>Paulina&apos;s Website</title>
+            <meta name="description" content="See about Paulina&apos;s bio." />
+        </Head>
         <GenericSection classes={[sheet.hero]} theme='primary' mild={true}>
             <article>
                 <p className='display display-6'>
@@ -274,7 +385,7 @@ const Page : NextPage = () => {
                     Now I currently work as a model in Awesome Photography.
                 </p>
                 <p>
-                    Endorsment offer is welcome. Please contact me for more information.
+                    Endorsement offer is welcome. Please contact me for more information.
                 </p>
             </article>
             <footer className='fill'>
@@ -356,19 +467,27 @@ const Page : NextPage = () => {
                     Maybe I can help. Please contact me for booking.
                 </p>
                 <hr />
-                <Button classes={['contact-btn']} icon='contact_mail' theme='primary'>
+                <Button classes={['contact-btn']} icon='contact_mail' theme='primary' gradient={true}>
                     <Link to='/contact'>Contact Me</Link>
                 </Button>
             </article>
         </GenericSection>
-        <Section title='Booking for Live Concert' theme='primary' mild={true}>
-            <p className='lead'>
-                Wanna to create live concert with me as a singer?
-            </p>
-            <p>
-                Sure! We can collaborate with you &amp; team.
-            </p>
-        </Section>
+        <GenericSection classes={[sheet.concert]} theme='primary' mild={true}>
+            <img className='illustration' src='/images/music-concert.svg' alt='' />
+            <article>
+                <h2>Booking for Live Concert</h2>
+                <p className='lead'>
+                    Wanna to create live concert with me as a singer?
+                </p>
+                <p>
+                    Sure! We can collaborate with you &amp; team.
+                </p>
+                <hr />
+                <Button classes={['contact-btn']} icon='contact_mail' theme='primary' gradient={true}>
+                    <Link to='/contact'>Contact Me</Link>
+                </Button>
+            </article>
+        </GenericSection>
     </>);
 }
 export default Page;
