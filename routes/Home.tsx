@@ -7,10 +7,12 @@ import { colors } from '@nodestrap/colors'
 import { spacers } from '@nodestrap/spacers'
 import { Carousel } from '@nodestrap/carousel'
 import { Masonry } from '@nodestrap/masonry'
-import { isScreenWidthSmallerThan } from '@nodestrap/breakpoints'
+import { isScreenWidthSmallerThan, isScreenWidthAtLeast } from '@nodestrap/breakpoints'
 import { cssProps as containerConfig } from '@nodestrap/container'
 import { Icon } from '@nodestrap/icon'
+import { ButtonIcon as Button } from '@nodestrap/button-icon'
 import gens from '@nodestrap/typos'
+import { Link } from '@nodestrap/react-router-link'
 
 
 
@@ -108,7 +110,9 @@ const useSheet = createUseSheet(() => [
                     gridArea: 'footer',
 
                     borderBlockStart: `solid 1px ${colors.white}`,
-                    background: `linear-gradient(0deg, ${colors.primary}, ${(colors as any).primaryThinner})`,
+                    backgroundImage: [
+                        `linear-gradient(0deg, ${colors.primary}, ${(colors as any).primaryThinner})`,
+                    ],
                     backdropFilter: [['blur(5px)']],
 
                     display: 'grid',
@@ -157,6 +161,97 @@ const useSheet = createUseSheet(() => [
             ]),
         }),
     ]),
+    compositionOf('endorsement', [
+        layout({
+            ...children('&&', [
+                layout({
+                    display: 'grid',
+                    gridTemplateColumns: [['1fr']],
+                    gridTemplateRows: [['2fr', '1fr', '1fr']],
+                    gridTemplateAreas: [[
+                        '"illus"',
+                        '"shared"',
+                        '"content"',
+                    ]],
+                    justifyItems: 'center',
+                    alignItems: 'center',
+        
+                    ...children('.illustration', [
+                        layout({
+                            gridArea: 'illus/illus / content/content',
+
+                            position: 'absolute', // do not taking space
+                            // justifySelf: 'stretch',
+                            // alignSelf: 'stretch',
+                            // width: '100%',
+                            // height: '100%',
+                            inlineSize: `calc(100% + (2 * ${containerConfig.paddingInline}))`,
+                            blockSize: `calc(100% + (2 * ${containerConfig.paddingBlock}))`,
+                            objectFit: 'cover',
+                            objectPosition: '50% 35%',
+
+                        }),
+                    ]),
+                    ...children('article', [
+                        layout({
+                            gridArea: 'shared/shared / content/content',
+                            alignSelf: 'end',
+
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+        
+                            backgroundImage: [
+                                `linear-gradient(${(colors as any).primaryThinner}, ${(colors as any).primaryThinner})`,
+                                // 'linear-gradient(rgba(255,255,255, 0.3), rgba(255,255,255, 0.3))'
+                            ],
+                            border: `solid 1px ${colors.white}`,
+                            backdropFilter: [['blur(10px)']],
+                            filter: [[`drop-shadow(0px 0px 10px ${colors.primaryBold})`]],
+        
+                            paddingInline: containerConfig.paddingInline,
+                            paddingBlock: containerConfig.paddingBlock,
+        
+                            // marginInline: `calc(0px - ${containerConfig.paddingInline})`,
+                            // marginBlock: `calc(0px - ${containerConfig.paddingBlock})`,
+                            // inlineSize: `calc(100% + (2 * ${containerConfig.paddingInline}))`
+                            inlineSize: '100%',
+        
+                            
+                            ...children('.contact-btn', [
+                                layout({
+                                    alignSelf: 'end',
+                                }),
+                            ]),
+                        }),
+                    ]),
+                }),
+                variants([
+                    isScreenWidthAtLeast('sm', [
+                        layout({
+                            // background: 'red',
+                            gridTemplateColumns: [['1fr', '1fr', '1fr']],
+                            gridTemplateRows: [['1fr']],
+                            gridTemplateAreas: [[
+                                '"illus shared content"',
+                            ]],
+        
+                            ...children('.illustration', [
+                                layout({
+                                    gridArea: 'illus/illus / shared/shared',
+                                }),
+                            ]),
+                            ...children('article', [
+                                layout({
+                                    gridArea: 'shared/shared / content/content',
+                                }),
+                            ]),
+                        })
+                    ])
+                ]),
+            ]),
+        }),
+    ]),
 ], /*sheetId :*/'home');
 
 
@@ -191,7 +286,7 @@ const Page : NextPage = () => {
         </GenericSection>
         <Section title='My Song Albums' theme='primary' mild={true}>
             <p>
-                Here some album I&apos;ve created. Not so much.
+                Here some album I&apos;ve created. Not so much because I&apos;m a young singer.
             </p>
             <SubSection title='The Best Damn Thing'>
                 <p>
@@ -250,14 +345,22 @@ const Page : NextPage = () => {
                 </div>
             </SubSection>
         </Section>
-        <Section title='Endorsement' theme='secondary' mild={true}>
-            <p className='lead'>
-                Need a model for promoting your products?
-            </p>
-            <p>
-                Maybe I can help. Please contact me for booking.
-            </p>
-        </Section>
+        <GenericSection classes={[sheet.endorsement]} theme='secondary' mild={true}>
+            <img className='illustration' src='/images/endorsement.svg' alt='' />
+            <article>
+                <h2>Endorsement</h2>
+                <p className='lead'>
+                    Need a model for promoting your products?
+                </p>
+                <p>
+                    Maybe I can help. Please contact me for booking.
+                </p>
+                <hr />
+                <Button classes={['contact-btn']} icon='contact_mail' theme='primary'>
+                    <Link to='/contact'>Contact Me</Link>
+                </Button>
+            </article>
+        </GenericSection>
         <Section title='Booking for Live Concert' theme='primary' mild={true}>
             <p className='lead'>
                 Wanna to create live concert with me as a singer?

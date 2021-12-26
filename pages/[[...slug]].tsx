@@ -99,7 +99,7 @@ export default (function Page(props) {
                     <NavbarMenu><Link to='/'>Home</Link></NavbarMenu>
                     <NavbarMenu><Link to='/gallery'>Gallery</Link></NavbarMenu>
                     <NavbarMenu><Link to='/about'>About</Link></NavbarMenu>
-                    <NavbarMenu><Link to='/contact'>Contact Us</Link></NavbarMenu>
+                    <NavbarMenu><Link to='/contact'>Contact Me</Link></NavbarMenu>
                     <NavbarMenu href='https://www.instagram.com/shpakovskayapolya' target='_blank'>Instagram</NavbarMenu>
                 </Navbar>
             </header>

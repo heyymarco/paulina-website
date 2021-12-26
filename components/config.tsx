@@ -20,7 +20,7 @@ createSheet(() => [
     globalDef([
         rule('html', [
             layout({
-                blockSize: 'fill-available',
+                blockSize: '100%',
             }),
         ]),
         rule(['html', 'body'], [
@@ -62,6 +62,7 @@ createSheet(() => [
             layout({
                 fontFamily : '"Embassy"',
                 fontSize   : '50px',
+                overflow   : 'hidden', // fix to fontSize 51px on firefox
                 lineHeight : 1,
                 whiteSpace : 'nowrap',
             }),
