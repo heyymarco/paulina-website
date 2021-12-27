@@ -7,7 +7,7 @@ import Color from 'color'
 
 
 interface SiteVars {
-    bodyHeight     : any
+    windowHeight   : any
     headerHeight   : any
     footerHeight   : any
     viewportHeight : any
@@ -18,6 +18,12 @@ export const [siteVars, siteVarDecls] = createCssVar<SiteVars>({ minify: false }
 
 createSheet(() => [
     globalDef([
+        rule('*', [
+            layout({
+                boxSizing : 'border-box',
+            }),
+        ]),
+
         rule('html', [
             layout({
                 blockSize: '100%',
@@ -29,17 +35,6 @@ createSheet(() => [
                 margin  : '0px',
             }),
         ]),
-        rule('a', [
-            layout({
-                color          : 'inherit',
-                textDecoration : 'none',
-            }),
-        ]),
-        rule('*', [
-            layout({
-                boxSizing : 'border-box',
-            }),
-        ]),
         rule('body>*>header', [
             layout({
                 zIndex          : 1020,
@@ -47,6 +42,14 @@ createSheet(() => [
                 insetBlockStart : '0px',
             }),
         ]),
+
+        rule('a', [
+            layout({
+                color          : 'inherit',
+                textDecoration : 'none',
+            }),
+        ]),
+        
         rule('.logo', [
             rules([
                 fontFace([
@@ -70,7 +73,7 @@ createSheet(() => [
 
         atRoot([
             vars({
-                [siteVarDecls.viewportHeight] : `calc(${siteVars.bodyHeight} - ${siteVars.headerHeight})`,
+                [siteVarDecls.viewportHeight] : `calc(${siteVars.windowHeight} - ${siteVars.headerHeight})`,
             }),
         ]),
     ]),

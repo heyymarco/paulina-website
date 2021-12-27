@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
@@ -7,14 +6,14 @@ import { Navbar, NavbarMenu, cssProps as navbarConfig } from '@nodestrap/navbar'
 import { Link } from '@nodestrap/react-router-link'
 import { config as iconConfig } from '@nodestrap/icon'
 import { useRouter } from 'next/router'
-import { Container } from '@nodestrap/container'
-import { siteVarDecls } from '../components/config'
-import { useObserveHeight } from '../components/hooks'
+import { siteVarDecls } from '../website.config'
+import { useElementCssSize, useWindowCssSize } from '../components/hooks'
 import Home from '../routes/Home'
 import Gallery from '../routes/Gallery'
 import UnderConstruct from '../routes/UnderConstruct'
 import Contact from '../routes/Contact'
 import NotFound from '../routes/404'
+import { Section } from '../components/Section'
 
 
 
@@ -30,12 +29,9 @@ iconConfig.img.files.push('paulina-logo.svg');
 
 
 export default (function Page(props) {
-    const setHeaderRef = useObserveHeight(siteVarDecls.headerHeight);
-    const setFooterRef = useObserveHeight(siteVarDecls.footerHeight);
-    const setBodyRef = useObserveHeight(siteVarDecls.bodyHeight);
-    useEffect(() => {
-        setBodyRef(window.document.documentElement)
-    }, [setBodyRef]);
+    const setHeaderRef = useElementCssSize({ varHeight: siteVarDecls.headerHeight });
+    const setFooterRef = useElementCssSize({ varHeight: siteVarDecls.footerHeight });
+    useWindowCssSize({ varHeight: siteVarDecls.windowHeight });
 
 
 
@@ -52,6 +48,7 @@ export default (function Page(props) {
                 <meta name="description" content="See about Paulina&apos;s bio." />
                 <link rel="icon" href="/favicon.png" />
             </Head>
+            
             <header ref={setHeaderRef}>
                 <Navbar
                     theme='primary'
@@ -74,12 +71,14 @@ export default (function Page(props) {
                     <Route path='*' element={<NotFound />} />
                 </Routes>
             </main>
-
-            <Container elmRef={setFooterRef} tag='footer' theme='primary' mild={false}>
-                <p>
-                    © Copyright 2022 Paulina
-                </p>
-            </Container>
+            
+            <footer ref={setFooterRef}>
+                <Section theme='primary' mild={false}>
+                    <p>
+                        © Copyright 2022 Paulina
+                    </p>
+                </Section>
+            </footer>
         </IsomorphicRouter>
     )
 } as NextPage)

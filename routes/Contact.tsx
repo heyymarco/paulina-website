@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { GenericSection, Section } from '../components/Section'
 import { layout, compositionOf, children, variants, rule } from '@cssfn/cssfn'
 import { createUseSheet } from '@cssfn/react-cssfn'
-import { siteVars } from '../components/config'
+import { siteVars } from '../website.config'
 import { colors } from '@nodestrap/colors'
 import { borders } from '@nodestrap/borders'
 import { spacers } from '@nodestrap/spacers'
@@ -16,7 +16,7 @@ import { EditableTextControl } from '@nodestrap/editable-text-control'
 import { Email, Input } from '@nodestrap/input'
 import { Group } from '@nodestrap/group'
 import { Label } from '@nodestrap/label'
-import { useOnResize } from '../components/hooks'
+import { useElementOnResize } from '../components/hooks'
 import { ButtonIcon as Button } from '@nodestrap/button-icon'
 
 
@@ -183,8 +183,7 @@ const Page : NextPage = () => {
 
     
     const [overflowed, setOverflowed] = useState(false);
-    const [sectionRef, setSectionRef] = useOnResize(() => {
-        if (!sectionRef) return;
+    const setSectionRef = useElementOnResize((sectionRef) => {
         if (sectionRef.scrollWidth > sectionRef.clientWidth) setOverflowed(true);
     });
 

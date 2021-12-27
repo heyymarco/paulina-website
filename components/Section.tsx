@@ -33,12 +33,12 @@ export interface SectionProps extends GenericSectionProps {
     children  : React.ReactNode
 }
 export const Section = (props: SectionProps) => {
-    const { titleTag = 'h2', title, children } = props;
+    const { titleTag = 'h2', title, children, ...restProps} = props;
     
     
     
     return (
-        <GenericSection {...props}>
+        <GenericSection {...restProps}>
             <article>
                 {title && <Element tag={titleTag}>
                     { title }
