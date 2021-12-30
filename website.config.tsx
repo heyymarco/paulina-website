@@ -3,6 +3,7 @@ import { createSheet, globalDef, rules, rule, atRoot, fontFace, layout, vars } f
 import { createCssVar } from '@cssfn/css-var'
 import { colors, defineTheme, defineForeg } from '@nodestrap/colors'
 import Color from 'color'
+import { cssProps as navbarConfig } from '@nodestrap/navbar'
 
 
 
@@ -98,3 +99,6 @@ defineForeg(textColor);
 
 iconConfig.img.files.push('paulina-logo.svg');
 iconConfig.img.files.push('scroll-down.svg');
+
+
+(navbarConfig as any).menuFontWeight = 400;

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { GenericSection, Section } from '../components/Section'
@@ -10,14 +10,14 @@ import { borders } from '@nodestrap/borders'
 import { spacers } from '@nodestrap/spacers'
 import { isScreenWidthAtLeast } from '@nodestrap/breakpoints'
 import { cssProps as containerConfig } from '@nodestrap/container'
-import { usesThemeVariant } from '@nodestrap/basic'
+import { usesThemeVariant, OrientationName } from '@nodestrap/basic'
 import { Form } from '@nodestrap/form'
 import { EditableTextControl } from '@nodestrap/editable-text-control'
-import { Email, Input } from '@nodestrap/input'
+import { Email } from '@nodestrap/input'
 import { Group } from '@nodestrap/group'
 import { Label } from '@nodestrap/label'
-import { useElementOnResize } from '../components/hooks'
 import { ButtonIcon as Button } from '@nodestrap/button-icon'
+import { ResponsiveProvider } from '@nodestrap/responsive'
 
 
 
@@ -181,12 +181,6 @@ const useSheet = createUseSheet(() => {
 const Page : NextPage = () => {
     const sheet = useSheet();
 
-    
-    const [overflowed, setOverflowed] = useState(false);
-    const setSectionRef = useElementOnResize((sectionRef) => {
-        if (sectionRef.scrollWidth > sectionRef.clientWidth) setOverflowed(true);
-    });
-
     const [enableValidation, setEnableValidation] = useState(false);
     const handleSend = () => {
         setEnableValidation(true);
@@ -211,20 +205,23 @@ const Page : NextPage = () => {
                 </p>
             </article>
         </GenericSection>
-        <Section elmRef={setSectionRef} title='Contact Form'>
-            <Form classes={[sheet.form]} enableValidation={enableValidation}>
-                <Group orientation={overflowed ? 'block' : 'inline'}>
-                    <Label>Your email</Label>
-                    <Email required={true} />
-                </Group>
-                <Group orientation={overflowed ? 'block' : 'inline'}>
-                    <Label>Message</Label>
-                    <EditableTextControl tag='textarea' required={true} minLength={30} />
-                </Group>
-                <Button onClick={handleSend}>
-                    Send
-                </Button>
-            </Form>
+        <Section title='Contact Form'>
+            <ResponsiveProvider<OrientationName> fallbacks={['inline', 'block']}>{(fallback) => (
+                <Form classes={[sheet.form]} enableValidation={enableValidation}>
+                    <Group orientation={fallback}>
+                        <Label>Your email</Label>
+                        <Email required={true} />
+                    </Group>
+                    <Group orientation={fallback}>
+                        <Label>Message</Label>
+                        <EditableTextControl tag='textarea' required={true} minLength={30} />
+                    </Group>
+                    <Button onClick={handleSend} theme='primary'>
+                        Send
+                    </Button>
+                </Form>
+            )}
+            </ResponsiveProvider>
         </Section>
     </>);
 }
